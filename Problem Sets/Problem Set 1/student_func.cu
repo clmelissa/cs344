@@ -50,6 +50,17 @@ void rgba_to_greyscale(const uchar4* const rgbaImage,
   //First create a mapping from the 2D block and grid locations
   //to an absolute 2D location in the image, then use that to
   //calculate a 1D offset
+  unsigned int pixel ; 
+  //getting the x,y coordinate 
+  unsigned int x = blockDim.x*blockIdx.x + threadIdx.x;
+  unsigned int y = blockDim.y*blockIdx.y + threadIdx.y;
+  //convert the x,y coord to 1D pixel index
+  pixel = x + y * numCols;
+  
+  //convert colour to greyscale
+  float greyscale =  .299f * rgbaImage[pixel].x + .587f * rgbaImage[pixel].y + .114f * rgbaImage[pixel].z;
+  greyImage[pixel] = greyscale;
+  
 }
 
 void your_rgba_to_greyscale(const uchar4 * const h_rgbaImage, uchar4 * const d_rgbaImage,
